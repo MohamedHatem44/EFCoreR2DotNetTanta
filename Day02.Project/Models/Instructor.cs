@@ -19,7 +19,7 @@ namespace Day02.Project.Models
         public string Ins_FirstName { get; set; }
 
         [Required]
-        [MinLength(3)]
+        [MinLength(3)] // DataAnnotation => MinimumLength => Validation
         [MaxLength(50)]
         public string Ins_LastName { get; set; }
 

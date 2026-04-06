@@ -1,6 +1,7 @@
 ﻿using Day02.Project.Configuration;
 using Day02.Project.Models;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Day02.Project.Context
 {
@@ -56,6 +57,24 @@ namespace Day02.Project.Context
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Student>().HasQueryFilter(s => !s.IsDeleted);
+        }
+        /*------------------------------------------------------------------*/
+        public override int SaveChanges()
+        {
+            var entities = from e in ChangeTracker.Entries()
+                           where e.State == EntityState.Added || e.State == EntityState.Modified
+                           select e.Entity;
+
+            foreach (var item in entities)
+            {
+                // Validation
+                var validationContext = new ValidationContext(item);
+                Validator.ValidateObject(item, validationContext, true);
+            }
+
+            return base.SaveChanges();
         }
         /*------------------------------------------------------------------*/
         // Tables
@@ -68,3 +87,12 @@ namespace Day02.Project.Context
         /*------------------------------------------------------------------*/
     }
 }
+
+// CreatedOn
+// CreatedBy
+// ModfiedOn
+// ModifiedBy
+
+// LastPPChangedAt
+// LastLogin
+// LastPasswordChangedAt

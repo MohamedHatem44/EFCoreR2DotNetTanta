@@ -19,5 +19,7 @@
         public virtual ICollection<Student_Course> Student_Courses { get; set; }
         = new HashSet<Student_Course>();
         /*------------------------------------------------------------------*/
+
+        //public bool IsDeleted { get; set; }
     }
 }
